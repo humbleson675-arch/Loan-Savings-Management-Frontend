@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, BrowserRouter, useLocation } from "react-router-dom";
+import { Routes, Route, BrowserRouter, } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import Sign from "./components/Sign";
@@ -7,7 +7,6 @@ import About from "./components/About";
 import Support from "./components/Support";
 import Contact from "./components/Contact";
 import LoginForm from "./components/Login";
-import DashboardNavbar from "./components/DashboardNavbar";
 import Loan from "./components/Loan";
 import Savings from "./components/Savings";
 import Transactions from "./components/Transactions";

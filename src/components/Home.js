@@ -1,6 +1,4 @@
 import React from "react";
-import { Routes, Route, BrowserRouter } from "react-router-dom";
-import Navbar from "./Navbar";
 import Footer from "./Footer";
 import Homeimage1 from "../assets/image.png";
 import Homeimage2 from "../assets/.png";
