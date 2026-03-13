@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"; // add Navigate
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -35,6 +35,9 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* redirect root to /home */}
+        <Route path="/" element={<Navigate to="/home" replace />} />
+
         {/* ===== PUBLIC PAGES ===== */}
         <Route path="/home" element={<PublicPage Component={Home} />} />  {/* Landing page */}
         <Route path="/about" element={<PublicPage Component={About} />} />
