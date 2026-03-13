@@ -16,7 +16,7 @@ function About() {
       {/* CONTENT SECTION */}
       <section style={styles.content}>
         <div style={styles.card}>
-          <h3 style={styles.title}>🎯 Our Mission</h3>
+          <h3 style={styles.title}> Our Mission</h3>
           <p style={styles.text}>
             To provide a simple, secure, and transparent platform that helps
             individuals and community groups manage savings and loans with
@@ -25,7 +25,7 @@ function About() {
         </div>
 
         <div style={styles.card}>
-          <h3 style={styles.title}>👁 Our Vision</h3>
+          <h3 style={styles.title}> Our Vision</h3>
           <p style={styles.text}>
             To become a trusted digital financial solution that promotes
             financial inclusion, accountability, and economic growth among
@@ -34,7 +34,7 @@ function About() {
         </div>
 
         <div style={styles.card}>
-          <h3 style={styles.title}>💡 What We Do</h3>
+          <h3 style={styles.title}> What We Do</h3>
           <ul style={styles.list}>
             <li>Manage member savings records</li>
             <li>Track loans and repayments</li>
@@ -44,12 +44,13 @@ function About() {
         </div>
 
         <div style={styles.card}>
-          <h3 style={styles.title}>🤝 Who We Serve</h3>
+          <h3 style={styles.title}> Who We Serve</h3>
           <p style={styles.text}>
             DLSMS is designed for community groups, savings groups, and refugee
             associations seeking a reliable digital system to manage finances
             fairly and efficiently.
           </p>
+          
         </div>
       </section>
 
@@ -58,7 +59,9 @@ function About() {
         <p style={styles.noteText}>
           Together, we build trust, discipline, and a better financial future.
         </p>
+  
       </section>
+      
     </div>
   );
 }

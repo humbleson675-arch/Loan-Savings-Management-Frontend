@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function Footer({ page = "home" }) {
+function Footer({ page = "home",}) {
   return (
     <footer style={styles.footer}>
       <div style={styles.container}>
@@ -22,10 +22,11 @@ function Footer({ page = "home" }) {
           <h4 style={styles.title}>Quick Links</h4>
           <ul style={styles.list}>
             <li><Link to="/" style={styles.link}>Home</Link></li>
+            <li><Link to="/about" style={styles.link}>About</Link></li>
+            <li><Link to="/support" style={styles.link}>Support</Link></li>
+            <li><Link to="/contact" style={styles.link}>Contact</Link></li>
+            <li><Link to="/sign" style={styles.link}>Sign up</Link></li>
             <li><Link to="/login" style={styles.link}>Login</Link></li>
-            <li><Link to="/dashboard" style={styles.link}>Dashboard</Link></li>
-            <li><Link to="/loan" style={styles.link}>Loan</Link></li>
-            <li><Link to="/savings" style={styles.link}>Savings</Link></li>
             
           </ul>
         </div>
@@ -34,7 +35,7 @@ function Footer({ page = "home" }) {
         <div style={styles.right}>
           {(page === "home" || page === "login") && (
             <>
-              <h4 style={styles.title}>Waht we do</h4>
+              <h4 style={styles.title}>What we do</h4>
               <p style={styles.text}>Secure Digital Savings</p>
               <p style={styles.text}>Instant Digital Loans</p>
               <p style={styles.text}>Improved Safety & Transparency</p>

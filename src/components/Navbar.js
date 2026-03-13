@@ -34,32 +34,32 @@ function Navbar(props) {
                                 textDecoration: "none", 
                                 }}>{props.link1}</Link>
 
-        <Link to="/sign"style={{color: "white" ,
+        <Link to="/about"style={{color: "white" ,
                                 fontSize: "1.3rem" ,
                                 fontWeight: "bold" ,
                                  textDecoration: "none"
                                  }}>{props.link2}</Link>
 
-        <Link to="/login"style={{color: "white" , 
+        <Link to="/support"style={{color: "white" , 
                                      fontSize: "1.3rem" ,
                                      fontWeight: "bold" ,
                                       textDecoration: "none"
                                       }}>{props.link3}</Link>
 
-        <Link to="/about"style={{color: "white", 
+        <Link to="/contact"style={{color: "white", 
                                    fontSize: "1.3rem" ,
                                    fontWeight: "bold" ,
                                    textDecoration: "none"
                                    }}>{props.link4}</Link>
 
-        <Link to ="/support" style={{color: "white" , 
+        <Link to ="/sign" style={{color: "white" , 
                                   fontSize: "1.3rem" ,
                                   fontWeight: "bold" , 
                                   textDecoration: "none"
                                   }}>{props.link5}</Link>
 
         
-        <Link to="/contact"style={{color: "white" , 
+        <Link to="/login"style={{color: "white" , 
                                      fontSize: "1.3rem" ,
                                      fontWeight: "bold" ,
                                       textDecoration: "none"

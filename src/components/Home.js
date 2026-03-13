@@ -1,5 +1,4 @@
 import React from "react";
-import Footer from "./Footer";
 import Homeimage1 from "../assets/image.png";
 import Homeimage2 from "../assets/.png";
 import Homeimage3 from "../assets/cash.png";
@@ -63,10 +62,10 @@ function Home() {
 
       <h3 style={subheadingStyle}>This system allows you to:</h3>
       <ol style={listStyle}>
-        <li>View and manage your savings records</li>
-        <li>Apply for and track loans</li>
-        <li>Monitor transactions and balances</li>
-        <li>Access your account securely from anywhere</li>
+        View and manage your savings records
+        Apply for and track loans
+        Monitor transactions and balances
+        Access your account securely from anywhere
       </ol>
 
       <p style={paragraphStyle}>
@@ -79,7 +78,7 @@ function Home() {
         financial future.
       </p>
 
-      <Footer />
+      
     </div>
   );
 }

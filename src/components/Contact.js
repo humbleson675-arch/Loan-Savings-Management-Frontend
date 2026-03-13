@@ -142,7 +142,7 @@ function Contact() {
 
         {/* Location */}
         <div style={styles.section}>
-          <h3 style={styles.sectionTitle}>📍 Location</h3>
+          <h3 style={styles.sectionTitle}> Location</h3>
           <p style={styles.text}>
             Turkana County, Kakuma Refugee Camp
           </p>
@@ -178,7 +178,9 @@ function Contact() {
         <p style={styles.footerNote}>
           We value your communication and will respond as soon as possible.
         </p>
+        
       </div>
+      
     </div>
   );
 }
