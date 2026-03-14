@@ -168,6 +168,7 @@
 // }
 
 // export default MemberDashboard;
+
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -181,6 +182,7 @@ function MemberDashboard() {
   const [paymentMethod, setPaymentMethod] = useState("mpesa");
   const [loanAmount, setLoanAmount] = useState("");
   const [loanDuration, setLoanDuration] = useState("3");
+  const [withdrawAmount, setWithdrawAmount] = useState("");
 
   const token = localStorage.getItem("token");
   const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -226,19 +228,53 @@ function MemberDashboard() {
     fetchDashboard();
   };
 
-  const requestLoan = async () => {
-    if (!loanAmount) return alert("Enter amount");
+  // const requestLoan = async () => {
+  //   if (!loanAmount) return alert("Enter amount");
 
-    await axios.post(
+  //   await axios.post(
+  //     "http://localhost:8080/api/member/loan",
+  //     { amount: Number(loanAmount), duration: Number(loanDuration) },
+  //     { headers: { Authorization: `Bearer ${token}` } }
+  //   );
+
+  //   setLoanAmount("");
+  //   fetchDashboard();
+  // };
+  const requestLoan = async () => {
+  if (!loanAmount || !loanDuration) return alert("Enter amount and duration");
+
+  try {
+    const res = await axios.post(
       "http://localhost:8080/api/member/loan",
       { amount: Number(loanAmount), duration: Number(loanDuration) },
       { headers: { Authorization: `Bearer ${token}` } }
     );
 
+    alert(res.data.message);
     setLoanAmount("");
     fetchDashboard();
-  };
+  } catch (error) {
+    console.error("Loan request error:", error.response?.data || error.message);
+    alert(error.response?.data?.message || "Loan request failed");
+  }
+};
 
+    const handleWithdraw = async () => {
+  if (!withdrawAmount) return alert("Enter withdraw amount");
+
+  try {
+    await axios.post(
+      "http://localhost:8080/api/member/withdraw",
+      { amount: Number(withdrawAmount) },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    setWithdrawAmount("");
+    fetchDashboard();
+  } catch (error) {
+    alert(error.response?.data?.message || "Withdraw failed");
+  }
+};
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -253,15 +289,15 @@ function MemberDashboard() {
     );
 
   return (
-    <div style={{ maxWidth: "1200px", margin: "auto", padding: 20, fontFamily: "Arial" }}>
+   <div style={containerStyle}>
       {/* HEADER */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 25 }}>
+        <div style={headerStyle}>
         <h2>Member Dashboard</h2>
         <button onClick={handleLogout} style={buttonStyle}>Logout</button>
       </div>
 
       {/* STATS */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(200px,1fr))", gap: 20, marginBottom: 30 }}>
+      <div style={statsGrid}>
         {[
           { title: "Savings", value: dashboard.totalSavings },
           { title: "Loans", value: dashboard.totalLoanAmount },
@@ -277,7 +313,7 @@ function MemberDashboard() {
       </div>
 
       {/* ACTIONS */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", gap: 20 }}>
+       <div style={actionsGrid}>
         {/* Deposit */}
         <div style={cardStyle}>
           <h3>Deposit</h3>
@@ -297,7 +333,9 @@ function MemberDashboard() {
             <option value="group_savings">Group Savings</option>
             <option value="loan_repayment">Loan Repayment</option>
           </select>
-          <button onClick={handleDeposit} style={buttonStyle}>Submit Deposit</button>
+         <button onClick={handleDeposit} style={depositButton}>
+  Submit Deposit
+</button>
         </div>
 
         {/* Loan */}
@@ -311,24 +349,124 @@ function MemberDashboard() {
             style={inputStyle}
           />
           <select value={loanDuration} onChange={(e) => setLoanDuration(e.target.value)} style={inputStyle}>
-            <option value="1">1 Week</option>
-            <option value="2">2 Weeks</option>
-            <option value="3">3 Weeks</option>
-            <option value="1m">1 Month</option>
-            <option value="2m">2 Months</option>
-            <option value="3m">3 Months</option>
-            <option value="4m">4 Months</option>
-            <option value="5m">5 Months</option>
+            <option value>1 Week</option>
+            <option value>2 Weeks</option>
+            <option value>3 Weeks</option>
+            <option value>1 Month</option>
+            <option value>2 Months</option>
+            <option value>3 Months</option>
+            <option value>4 Months</option>
+            <option value>5 Months</option>
           </select>
-          <button onClick={requestLoan} style={buttonStyle}>Submit Loan</button>
+         <button onClick={requestLoan} style={loanButton}>Submit Loan</button>
         </div>
+        {/* Withdraw */}
+<div style={cardStyle}>
+  <h3>Withdraw</h3>
+
+  <input
+    type="number"
+    placeholder="Withdraw amount"
+    value={withdrawAmount}
+    onChange={(e) => setWithdrawAmount(e.target.value)}
+    style={inputStyle}
+  />
+
+  <button onClick={handleWithdraw} style={withdrawButton}>
+  Withdraw Money
+</button>
+</div>
       </div>
     </div>
   );
 }
 
-const inputStyle = { width: "100%", padding: 10, marginTop: 10, marginBottom: 12, borderRadius: 6, border: "1px solid #ccc" };
-const buttonStyle = { width: "100%", padding: 10, background: "#3498db", color: "white", border: "none", borderRadius: 6, cursor: "pointer" };
-const cardStyle = { background: "white", padding: 25, borderRadius: 10, boxShadow: "0 3px 10px rgba(0,0,0,0.08)" };
+
 
 export default MemberDashboard;
+
+
+const containerStyle = {
+  maxWidth: "1200px",
+  margin: "auto",
+  padding: "20px",
+  fontFamily: "Segoe UI, Arial",
+  background: "#f4f6f9",
+  minHeight: "100vh"
+};
+
+const headerStyle = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  marginBottom: "25px",
+  background: "#2c3e50",
+  padding: "15px 20px",
+  borderRadius: "10px",
+  color: "white"
+};
+
+const statsGrid = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit,minmax(200px,1fr))",
+  gap: "20px",
+  marginBottom: "30px"
+};
+
+const actionsGrid = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))",
+  gap: "20px"
+};
+
+// const statCard = {
+//   background: "white",
+//   padding: "20px",
+//   borderRadius: "10px",
+//   textAlign: "center",
+//   boxShadow: "0 4px 12px rgba(0,0,0,0.08)"
+// };
+
+const cardStyle = {
+  background: "white",
+  padding: "25px",
+  borderRadius: "12px",
+  boxShadow: "0 6px 15px rgba(0,0,0,0.08)"
+};
+
+const inputStyle = {
+  width: "100%",
+  padding: "12px",
+  marginTop: "10px",
+  marginBottom: "12px",
+  borderRadius: "8px",
+  border: "1px solid #ddd",
+  fontSize: "14px"
+};
+
+const buttonStyle = {
+  width: "100%",
+  padding: "12px",
+  background: "#3498db",
+  color: "white",
+  border: "none",
+  borderRadius: "8px",
+  cursor: "pointer",
+  fontWeight: "bold",
+  transition: "0.2s"
+};
+
+const depositButton = {
+  ...buttonStyle,
+  background: "#27ae60"
+};
+
+const loanButton = {
+  ...buttonStyle,
+  background: "#f39c12"
+};
+
+const withdrawButton = {
+  ...buttonStyle,
+  background: "#e74c3c"
+};

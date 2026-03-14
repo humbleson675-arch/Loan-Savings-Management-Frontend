@@ -443,7 +443,6 @@ function SignUpForm() {
               onChange={handleChange}
             >
               <option value="member">Member</option>
-              <option value="admin">Admin</option>
               <option value="treasurer">Treasurer</option>
             </select>
 

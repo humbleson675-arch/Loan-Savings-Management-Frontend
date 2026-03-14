@@ -13,21 +13,11 @@ function AdminDashboard() {
   const [reports, setReports] = useState({});
   const [repaymentAmount, setRepaymentAmount] = useState("");
 
-  const config = {
-    headers: { Authorization: `Bearer ${token}` },
-  };
+  const config = { headers: { Authorization: `Bearer ${token}` } };
 
-  // Protect route and fetch initial data
   useEffect(() => {
-    if (!token || !storedUser) {
-      navigate("/login");
-      return;
-    }
-
-    if (storedUser.role !== "admin") {
-      navigate("/");
-      return;
-    }
+    if (!token || !storedUser) return navigate("/login");
+    if (storedUser.role !== "admin") return navigate("/");
 
     fetchUsers();
     fetchLoans();
@@ -35,7 +25,7 @@ function AdminDashboard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Fetch data functions
+  // Fetch functions
   const fetchUsers = async () => {
     try {
       const res = await axios.get("http://localhost:8080/api/admin/users", config);
@@ -106,61 +96,72 @@ function AdminDashboard() {
     navigate("/login");
   };
 
+  // Filtered data
   const approvedLoans = loans.filter((l) => l.status === "approved");
   const pendingLoans = loans.filter((l) => l.status === "pending");
   const pendingUsers = users.filter((u) => !u.approved);
   const activeMembers = users.filter((u) => u.approved);
 
-  // Inline responsive styles
+  // Modern responsive styles
   const styles = {
     container: {
       padding: "20px",
       minHeight: "100vh",
-      backgroundColor: "#f4f6f9",
-      fontFamily: "Arial",
+      fontFamily: "'Segoe UI', Arial, sans-serif",
+      background: "#f1f5f9",
     },
     title: {
       textAlign: "center",
-      marginBottom: "20px",
+      fontSize: "28px",
+      fontWeight: "bold",
+      marginBottom: "25px",
+      color: "#1f2937",
     },
     grid: {
       display: "grid",
       gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
       gap: "15px",
+      marginBottom: "30px",
     },
     card: {
       padding: "20px",
-      backgroundColor: "#2563eb",
-      color: "white",
-      border: "none",
-      borderRadius: "8px",
-      cursor: "pointer",
+      background: "#2563eb",
+      color: "#fff",
+      borderRadius: "10px",
       fontWeight: "bold",
+      textAlign: "center",
+      cursor: "pointer",
+      transition: "0.3s",
+    },
+    cardHover: {
+      transform: "translateY(-4px)",
+      boxShadow: "0 8px 20px rgba(0,0,0,0.12)",
     },
     section: {
-      backgroundColor: "white",
+      background: "#fff",
       padding: "20px",
-      borderRadius: "8px",
-      boxShadow: "0 4px 10px rgba(0,0,0,0.05)",
+      borderRadius: "10px",
+      boxShadow: "0 4px 15px rgba(0,0,0,0.05)",
+      marginBottom: "20px",
     },
     row: {
       display: "flex",
       justifyContent: "space-between",
       alignItems: "center",
       flexWrap: "wrap",
-      marginBottom: "12px",
       padding: "10px",
+      marginBottom: "12px",
+      borderRadius: "8px",
       backgroundColor: "#f9fafb",
-      borderRadius: "6px",
     },
     columnRow: {
       display: "flex",
       flexDirection: "column",
       gap: "8px",
+      padding: "12px",
       marginBottom: "15px",
-      padding: "10px",
+      borderRadius: "8px",
       backgroundColor: "#f9fafb",
-      borderRadius: "6px",
     },
     buttonGroup: {
       display: "flex",
@@ -168,45 +169,53 @@ function AdminDashboard() {
       flexWrap: "wrap",
     },
     primaryBtn: {
-      padding: "6px 10px",
+      padding: "8px 12px",
       backgroundColor: "#16a34a",
       color: "white",
       border: "none",
-      borderRadius: "5px",
+      borderRadius: "6px",
       cursor: "pointer",
+      fontWeight: "bold",
+      transition: "0.2s",
     },
     dangerBtn: {
-      padding: "6px 10px",
+      padding: "8px 12px",
       backgroundColor: "#dc2626",
       color: "white",
       border: "none",
-      borderRadius: "5px",
+      borderRadius: "6px",
       cursor: "pointer",
+      fontWeight: "bold",
+      transition: "0.2s",
     },
     backBtn: {
       marginTop: "15px",
-      padding: "8px 12px",
+      padding: "10px 15px",
       backgroundColor: "#6b7280",
       color: "white",
       border: "none",
-      borderRadius: "5px",
+      borderRadius: "6px",
       cursor: "pointer",
+      fontWeight: "bold",
     },
     input: {
-      padding: "8px",
+      padding: "10px",
       width: "100%",
-      borderRadius: "5px",
-      border: "1px solid #ddd",
+      borderRadius: "6px",
+      border: "1px solid #d1d5db",
     },
     logoutBtn: {
-      marginTop: "20px",
-      padding: "10px",
-      backgroundColor: "#111827",
-      color: "white",
+      marginTop: "25px",
+      padding: "12px",
+      background: "#111827",
+      color: "#fff",
       border: "none",
-      borderRadius: "6px",
+      borderRadius: "8px",
       width: "100%",
       cursor: "pointer",
+      fontWeight: "bold",
+      fontSize: "16px",
+      transition: "0.3s",
     },
   };
 
@@ -216,24 +225,24 @@ function AdminDashboard() {
 
       {view === "home" && (
         <div style={styles.grid}>
-          <button style={styles.card} onClick={() => setView("members")}>
-            Approve Members
-          </button>
-          <button style={styles.card} onClick={() => setView("loans")}>
-            Approve Loans
-          </button>
-          <button style={styles.card} onClick={() => setView("repayments")}>
-            Record Repayments
-          </button>
-          <button style={styles.card} onClick={() => setView("reports")}>
-            Financial Reports
-          </button>
-          <button style={styles.card} onClick={() => setView("active")}>
-            Active Members
-          </button>
+          {["Approve Members", "Approve Loans", "Record Repayments", "Financial Reports", "Active Members"].map((text, i) => (
+            <button
+              key={i}
+              style={styles.card}
+              onMouseEnter={(e) => e.currentTarget.style.transform = "translateY(-4px)"}
+              onMouseLeave={(e) => e.currentTarget.style.transform = "translateY(0px)"}
+              onClick={() => {
+                const views = ["members", "loans", "repayments", "reports", "active"];
+                setView(views[i]);
+              }}
+            >
+              {text}
+            </button>
+          ))}
         </div>
       )}
 
+      {/* Members view */}
       {view === "members" && (
         <div style={styles.section}>
           <h3>Pending Members</h3>
@@ -244,27 +253,16 @@ function AdminDashboard() {
                 <small>{user.email}</small>
               </div>
               <div style={styles.buttonGroup}>
-                <button
-                  style={styles.primaryBtn}
-                  onClick={() => approveMember(user._id)}
-                >
-                  Approve
-                </button>
-                <button
-                  style={styles.dangerBtn}
-                  onClick={() => deleteMember(user._id)}
-                >
-                  Delete
-                </button>
+                <button style={styles.primaryBtn} onClick={() => approveMember(user._id)}>Approve</button>
+                <button style={styles.dangerBtn} onClick={() => deleteMember(user._id)}>Delete</button>
               </div>
             </div>
           ))}
-          <button style={styles.backBtn} onClick={() => setView("home")}>
-            Back
-          </button>
+          <button style={styles.backBtn} onClick={() => setView("home")}>Back</button>
         </div>
       )}
 
+      {/* Loans view */}
       {view === "loans" && (
         <div style={styles.section}>
           <h3>Pending Loans</h3>
@@ -275,27 +273,16 @@ function AdminDashboard() {
                 <small>Amount: {loan.amount}</small>
               </div>
               <div style={styles.buttonGroup}>
-                <button
-                  style={styles.primaryBtn}
-                  onClick={() => approveLoan(loan._id)}
-                >
-                  Approve
-                </button>
-                <button
-                  style={styles.dangerBtn}
-                  onClick={() => rejectLoan(loan._id)}
-                >
-                  Reject
-                </button>
+                <button style={styles.primaryBtn} onClick={() => approveLoan(loan._id)}>Approve</button>
+                <button style={styles.dangerBtn} onClick={() => rejectLoan(loan._id)}>Reject</button>
               </div>
             </div>
           ))}
-          <button style={styles.backBtn} onClick={() => setView("home")}>
-            Back
-          </button>
+          <button style={styles.backBtn} onClick={() => setView("home")}>Back</button>
         </div>
       )}
 
+      {/* Repayments view */}
       {view === "repayments" && (
         <div style={styles.section}>
           <h3>Approved Loans</h3>
@@ -305,40 +292,31 @@ function AdminDashboard() {
                 {loan.userId?.name} <br />
                 <small>Loan: {loan.amount}</small>
               </div>
-
               <input
                 style={styles.input}
                 placeholder="Repayment Amount"
                 value={repaymentAmount}
                 onChange={(e) => setRepaymentAmount(e.target.value)}
               />
-
-              <button
-                style={styles.primaryBtn}
-                onClick={() => recordRepayment(loan._id)}
-              >
-                Record
-              </button>
+              <button style={styles.primaryBtn} onClick={() => recordRepayment(loan._id)}>Record</button>
             </div>
           ))}
-          <button style={styles.backBtn} onClick={() => setView("home")}>
-            Back
-          </button>
+          <button style={styles.backBtn} onClick={() => setView("home")}>Back</button>
         </div>
       )}
 
+      {/* Reports view */}
       {view === "reports" && (
         <div style={styles.section}>
           <h3>Financial Reports</h3>
           <p>Total Loans: {reports.totalLoans || 0}</p>
           <p>Total Repayments: {reports.totalRepayments || 0}</p>
           <p>Outstanding: {reports.outstanding || 0}</p>
-          <button style={styles.backBtn} onClick={() => setView("home")}>
-            Back
-          </button>
+          <button style={styles.backBtn} onClick={() => setView("home")}>Back</button>
         </div>
       )}
 
+      {/* Active Members */}
       {view === "active" && (
         <div style={styles.section}>
           <h3>Active Members</h3>
@@ -348,24 +326,15 @@ function AdminDashboard() {
                 {u.name} <br />
                 <small>{u.email}</small>
               </div>
-              <button
-                style={styles.dangerBtn}
-                onClick={() => deleteMember(u._id)}
-              >
-                Delete
-              </button>
+              <button style={styles.dangerBtn} onClick={() => deleteMember(u._id)}>Delete</button>
             </div>
           ))}
-          <button style={styles.backBtn} onClick={() => setView("home")}>
-            Back
-          </button>
+          <button style={styles.backBtn} onClick={() => setView("home")}>Back</button>
         </div>
       )}
 
-      <hr />
-      <button style={styles.logoutBtn} onClick={handleLogout}>
-        Logout
-      </button>
+      <hr style={{ margin: "25px 0" }} />
+      <button style={styles.logoutBtn} onClick={handleLogout}>Logout</button>
     </div>
   );
 }
